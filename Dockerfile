@@ -1,6 +1,6 @@
 FROM wordpress:6.9.0-php8.5-apache
 
-
+# --- tua logica esistente ---
 WORKDIR /usr/src/wordpress
 RUN set -eux; \
     find /etc/apache2 -name '*.conf' -type f \
@@ -9,12 +9,12 @@ RUN set -eux; \
         -e "s!Directory /var/www/!Directory $PWD!g" '{}' +; \
     cp -s wp-config-docker.php wp-config.php
 
-# --- SSH + CA + mysql-client ---
+# --- SSH + CA certificates ---
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
       openssh-server \
       ca-certificates \
-      mysql-client \
+      curl \
  && mkdir -p /var/run/sshd \
  && rm -rf /var/lib/apt/lists/*
 
@@ -22,10 +22,10 @@ RUN apt-get update \
 RUN curl -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
  && chmod +x /usr/local/bin/wp
 
-# Espone HTTP e SSH
+# Espone la porta HTTP e SSH
 EXPOSE 80 2222
 
-# Script di start che avvia sshd + Apache/WordPress
+# Script di start (lo crei accanto al Dockerfile)
 COPY start.sh /usr/local/bin/start.sh
 RUN chmod +x /usr/local/bin/start.sh
 
