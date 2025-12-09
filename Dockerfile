@@ -1,6 +1,5 @@
 FROM wordpress:6.9.0-php8.5-apache
 
-# --- tua logica esistente ---
 WORKDIR /usr/src/wordpress
 RUN set -eux; \
     find /etc/apache2 -name '*.conf' -type f \
@@ -9,7 +8,6 @@ RUN set -eux; \
         -e "s!Directory /var/www/!Directory $PWD!g" '{}' +; \
     cp -s wp-config-docker.php wp-config.php
 
-# --- SSH + CA certificates ---
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
       openssh-server \
@@ -18,15 +16,15 @@ RUN apt-get update \
  && mkdir -p /var/run/sshd \
  && rm -rf /var/lib/apt/lists/*
 
-# --- WP-CLI ---
-RUN curl -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
- && chmod +x /usr/local/bin/wp
+# Imposta password root come richiesto da Azure
+RUN echo "root:Docker!" | chpasswd
 
-# Espone la porta HTTP e SSH
+# Copia la configurazione SSH richiesta da Azure
+COPY sshd_config /etc/ssh/sshd_config
+
 EXPOSE 80 2222
 
-# Script di start (lo crei accanto al Dockerfile)
-COPY start.sh /usr/local/bin/start.sh
-RUN chmod +x /usr/local/bin/start.sh
+COPY init_container.sh /usr/local/bin/init_container.sh
+RUN chmod +x /usr/local/bin/init_container.sh
 
-CMD ["/usr/local/bin/start.sh"]
+ENTRYPOINT ["/usr/local/bin/init_container.sh"]
