@@ -15,6 +15,7 @@ RUN apt-get update \
       openssh-server \
       ca-certificates \
       curl \
+      less \
  && mkdir -p /var/run/sshd \
  && rm -rf /var/lib/apt/lists/*
 
