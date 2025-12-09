@@ -1,5 +1,6 @@
 FROM wordpress:6.9.0-php8.5-apache
 
+# --- Tua logica esistente ---
 WORKDIR /usr/src/wordpress
 RUN set -eux; \
     find /etc/apache2 -name '*.conf' -type f \
@@ -8,6 +9,7 @@ RUN set -eux; \
         -e "s!Directory /var/www/!Directory $PWD!g" '{}' +; \
     cp -s wp-config-docker.php wp-config.php
 
+# --- SSH + CA + curl (per WP-CLI) ---
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
       openssh-server \
@@ -16,15 +18,22 @@ RUN apt-get update \
  && mkdir -p /var/run/sshd \
  && rm -rf /var/lib/apt/lists/*
 
-# Imposta password root come richiesto da Azure
+# Imposta la password di root come richiesto da Azure (user: root, password: Docker!)
 RUN echo "root:Docker!" | chpasswd
 
-# Copia la configurazione SSH richiesta da Azure
+# Copia la configurazione SSH speciale per Azure
 COPY sshd_config /etc/ssh/sshd_config
 
+# --- WP-CLI (opzionale ma utile) ---
+RUN curl -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+ && chmod +x /usr/local/bin/wp
+
+# Espone HTTP e SSH
 EXPOSE 80 2222
 
+# Script di avvio che lancia sshd + docker-entrypoint di WordPress
 COPY init_container.sh /usr/local/bin/init_container.sh
 RUN chmod +x /usr/local/bin/init_container.sh
 
+# Usiamo il nostro entrypoint, che alla fine chiama quello originale di WordPress
 ENTRYPOINT ["/usr/local/bin/init_container.sh"]
