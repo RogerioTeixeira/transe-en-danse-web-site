@@ -1,5 +1,7 @@
 FROM wordpress:6.9.0-php8.5-apache
 
+COPY config/upload.ini $PHP_INI_DIR/conf.d/
+
 # --- Tua logica esistente ---
 WORKDIR /usr/src/wordpress
 RUN set -eux; \
