@@ -24,6 +24,10 @@ RUN echo "root:Docker!" | chpasswd
 # Copia la configurazione SSH speciale per Azure
 COPY sshd_config /etc/ssh/sshd_config
 
+RUN echo 'export WP_CLI_ALLOW_ROOT=1' >> /root/.bashrc \
+ && echo 'cd /usr/src/wordpress' >> /root/.bashrc \
+ && echo "alias wp='wp --path=/usr/src/wordpress'" >> /root/.bashrc
+
 # --- WP-CLI (opzionale ma utile) ---
 RUN curl -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
  && chmod +x /usr/local/bin/wp
