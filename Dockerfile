@@ -18,6 +18,7 @@ RUN apt-get update \
       ca-certificates \
       curl \
       less \
+      default-mysql-client \
  && mkdir -p /var/run/sshd \
  && rm -rf /var/lib/apt/lists/*
 
