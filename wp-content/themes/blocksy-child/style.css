@@ -1,0 +1,139 @@
+/**
+ * Theme Name: Blocksy Child
+ * Description: Blocksy Child theme
+ * Author: Creative Themes
+ * Template: blocksy
+ * Text Domain: blocksy
+ */
+
+ /* Badge circolare giorno/MESE */
+.date-badge{
+  --size: 56px;              /* cambia a 80/100/120px se vuoi */
+  width: var(--size);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: #f0b248;       /* cambia con il tuo brand */
+  color: #111;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  gap: 2px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.12);
+}
+
+.date-badge .day{
+  font-weight: 800;
+  font-size: 20px;           /* scala in base a --size */
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.date-badge .mon{
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1.1;
+  letter-spacing: .08em;
+  text-transform: uppercase; /* 3 lettere in maiuscolo */
+  opacity: .85;
+}
+
+/* Variante su sfondo scuro */
+.has-background-dark .date-badge{
+  background: rgba(255,255,255,.08);
+  color: #fff;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.12);
+}
+
+.ted-square-box {
+  aspect-ratio: 1 / 1; /* sempre quadrato */
+  width: 100%;         /* oppure una misura fissa, es. 300px */
+}
+
+.ted-hero {
+  position: relative;
+}
+.ted-hero::before {
+  position: absolute;
+  content: '';
+  left: 0;
+  right: 0;
+  bottom: -1000px;
+  height: 20px; 
+  background: transparent url('/wp-content/uploads/2025/09/tan-swash.svg') repeat-x;
+}
+
+.ted-hero:hover::before {
+  opacity: 1;
+}
+
+.ted-hero img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+tted-advanced-post-full {
+/*  align-items: stretch !important;*/
+}
+
+.ted-advanced-post-full .wp-block-cover__inner-container {
+  position: absolute;
+  inset: 0;          
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(16px, 3vw, 32px);
+}
+.ted-wd-auto-width {
+  width: auto !important;
+}
+
+.ted-anchor-offset {
+  scroll-margin-top: 200px !important; /* cambia 100px con l'altezza della tua navbar */
+}
+
+
+/* Griglia */
+.show-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+/* Ogni cella: altezza decisa SOLO dal padding-bottom */
+.show-gallery__item {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Box fantasma che fissa il rapporto, es. 4:3 → 75% */
+.show-gallery__item::before {
+  content: "";
+  display: block;
+  padding-bottom: 75%;  /* 4:3 → 75%; se vuoi 3:2 metti 66.666% ecc. */
+}
+
+/* L'immagine viene incollata sopra e croppata */
+.show-gallery__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.vertical-divider {
+  border-left: 1px solid rgba(0, 0, 0, 0.15); /* Cambia colore se vuoi */
+  align-self: stretch;
+  width: 1px;
+ /* height: auto;
+  margin: 0 16px; /* Spazio orizzontale intorno alla linea */
+}
+
