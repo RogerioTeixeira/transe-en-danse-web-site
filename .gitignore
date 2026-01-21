@@ -14,11 +14,7 @@
 /index.php
 /license.txt
 /readme.html
-/wp-*.php
 /xmlrpc.php
-
-# Configuration
-wp-config.php
 
 # Example themes
 /wp-content/themes/twenty*/
@@ -46,3 +42,7 @@ wp-config.php
 # Note: If you wish to whitelist themes,
 # uncomment the next line
 #/wp-content/themes
+wp-content/plugins/duplicator/installer/dup-installer/templates/default/pages-parts/step3/options-tabs/wp-config.php
+wp-content/.DS_Store
+.DS_Store
+wp-content/.DS_Store

@@ -40,6 +40,8 @@ RUN curl -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh
 
 COPY wp-content/plugins/ /usr/src/wordpress/wp-content/plugins/
 COPY wp-content/themes/  /usr/src/wordpress/wp-content/themes/
+COPY wp-content/themes/  /usr/src/wordpress/wp-content/themes/
+COPY wp-config.php /usr/src/wordpress/wp-config.php
 RUN chown -R www-data:www-data /usr/src/wordpress/wp-content
 
 # Espone HTTP e SSH
