@@ -1,0 +1,58 @@
+services:
+  wordpress:
+    build:
+      context: .
+    image: ted-wordpress:latest  # nome che vuoi dare all’immagine
+    container_name: wordpress
+    volumes:
+      - ./wp-content/plugins:/usr/src/wordpress/wp-content/plugins
+      - ./wp-content/mu-plugins:/usr/src/wordpress/wp-content/mu-plugins
+      - ./wp-content/themes:/usr/src/wordpress/wp-content/themes
+      - ./wp-content/uploads:/usr/src/wordpress/wp-content/uploads
+      - ./config/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+    environment:
+      - WORDPRESS_DB_NAME=wordpress
+      - WORDPRESS_TABLE_PREFIX=wp_
+      - WORDPRESS_DB_HOST=db
+      - WORDPRESS_DB_USER=root
+      - WORDPRESS_DB_PASSWORD=password
+    depends_on:
+      - db
+      - phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+ 
+  db:
+    image: mariadb:latest
+    container_name: db
+    volumes:
+      - db_data:/var/lib/mysql
+      # This is optional!!!
+      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
+      # # #
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=wordpress
+    restart: always
+    ports:
+      - 3307:3306
+ 
+  phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - 8180:80
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: password
+ 
+volumes:
+  db_data:
+    external: true
+    name: transe-en-danse-db-data

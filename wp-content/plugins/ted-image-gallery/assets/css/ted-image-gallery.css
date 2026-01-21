@@ -1,0 +1,104 @@
+/* solo la parte DESKTOP cambia, il resto (mobile) puoi tenerlo uguale */
+
+.ted-gallery {
+  --size: 180px;  /* qui controlli quanto è grande il rombo */
+  display: grid;
+  grid-template-columns: repeat(6, var(--size));
+  grid-auto-rows: var(--size);
+  margin-bottom: var(--size);
+  place-items: start center;
+  gap: 5px;
+  justify-content: center;
+}
+
+.ted-gallery:has(a:hover) a:not(:hover),
+.ted-gallery:has(a:focus) a:not(:focus) {
+  filter: brightness(0.5) contrast(0.5);
+}
+
+.ted-gallery a {
+  width: calc(var(--size) * 2);
+  height: calc(var(--size) * 2);
+  position: relative;
+  border-radius: 12px;
+  grid-column: auto / span 2;
+  overflow: hidden;
+
+  /* rombo semplice in percentuale → SCALA con la dimensione */
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+
+  transition: clip-path 0.25s, filter 0.75s;
+}
+
+.ted-gallery a:nth-child(5n - 1) {
+  grid-column: 2 / span 2;
+}
+
+/* hover/focus: allarga leggermente (puoi modificare) */
+.ted-gallery a:hover,
+.ted-gallery a:focus {
+  z-index: 1;
+  clip-path: polygon(-10% 0%, 110% 0%, 110% 110%, -10% 110%);
+  transition: clip-path 0.25s, filter 0.25s;
+}
+
+.ted-gallery a:focus {
+  outline: 1px dashed black;
+  outline-offset: -5px;
+}
+
+.ted-gallery a img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* ========== MOBILE (max 768px) ========== */
+@media (max-width: 768px) {
+  .ted-gallery {
+    --size: 45vw; /* si adatta alla larghezza dello schermo */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: auto;
+    gap: 6px;
+    place-items: stretch;
+    margin-bottom: 2rem;
+  }
+
+  /* Ogni card occupa una cella normale della griglia */
+  .ted-gallery a {
+    width: 100%;
+    height: auto;
+    grid-column: auto;
+    border-radius: 10px;
+    clip-path: none;         /* niente rombo su mobile */
+    filter: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ted-gallery a:nth-child(5n - 1) {
+    grid-column: auto;       /* disattivo gli shift di colonna */
+  }
+
+  .ted-gallery a img {
+    position: static;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;     /* opzionale: tutte con stessa proporzione */
+    object-fit: cover;
+    clip-path: none;
+    transition: transform 0.2s ease;
+  }
+
+  /* niente effetto “scurisce gli altri” su mobile */
+  .ted-gallery:has(a:hover) a:not(:hover),
+  .ted-gallery:has(a:focus) a:not(:focus) {
+    filter: none;
+  }
+
+  /* piccolo feedback al tap */
+  .ted-gallery a:active img {
+    transform: scale(0.97);
+  }
+}
+

@@ -1,0 +1,36 @@
+.ted-masonry-gallery {
+  margin: 0 auto;
+}
+
+/* 3 colonne su desktop */
+.ted-masonry-sizer,
+.ted-masonry-item {
+  width: 31.333%;
+}
+
+/* 2 colonne su tablet */
+@media (max-width: 900px) {
+  .ted-masonry-sizer,
+  .ted-masonry-item {
+    width: 50%;
+  }
+}
+
+/* 1 colonna su mobile */
+@media (max-width: 600px) {
+  .ted-masonry-sizer,
+  .ted-masonry-item {
+    width: 100%;
+  }
+}
+
+/* spazio SOLO verticale, niente casino orizzontale */
+.ted-masonry-item {
+  margin-bottom: 5px;
+}
+
+.ted-masonry-item img {
+  display: block;
+  width: 100%;
+  height: auto;
+}

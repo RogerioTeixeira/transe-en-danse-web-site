@@ -2,6 +2,7 @@ FROM wordpress:6.9.0-php8.5-apache
 
 COPY config/upload.ini $PHP_INI_DIR/conf.d/
 
+
 # --- Tua logica esistente ---
 WORKDIR /usr/src/wordpress
 RUN set -eux; \
@@ -36,11 +37,16 @@ RUN echo 'export WP_CLI_ALLOW_ROOT=1' >> /root/.bashrc \
 RUN curl -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
  && chmod +x /usr/local/bin/wp
 
+
+COPY wp-content/plugins/ /usr/src/wordpress/wp-content/plugins/
+COPY wp-content/themes/  /usr/src/wordpress/wp-content/themes/
+RUN chown -R www-data:www-data /usr/src/wordpress/wp-content
+
 # Espone HTTP e SSH
 EXPOSE 80 2222
 
 # Script di avvio che lancia sshd + docker-entrypoint di WordPress
-COPY init_container.sh /usr/local/bin/init_container.sh
+COPY scripts/init_container.sh /usr/local/bin/init_container.sh
 RUN chmod +x /usr/local/bin/init_container.sh
 
 # Usiamo il nostro entrypoint, che alla fine chiama quello originale di WordPress

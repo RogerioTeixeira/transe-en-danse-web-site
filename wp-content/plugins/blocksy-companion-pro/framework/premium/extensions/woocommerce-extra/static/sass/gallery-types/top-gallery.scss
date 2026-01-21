@@ -1,0 +1,13 @@
+@use "../../../../../../../static/sass/frontend/common-frontend/functions";
+
+.ct-top-gallery .flexy-pills {
+	@include functions.media-breakpoint-up(lg) {
+		max-width: 60%;
+		margin-inline: auto;
+
+		ol:not([data-flexy]),
+		ol[data-flexy*="paused"] {
+			--pills-horizontal-alignment: center;
+		}
+	}
+}
