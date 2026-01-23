@@ -43,6 +43,12 @@ define('LOGGED_IN_SALT',   getenv_docker('WORDPRESS_LOGGED_IN_SALT',   'put your
 define('NONCE_SALT',       getenv_docker('WORDPRESS_NONCE_SALT',       'put your unique phrase here'));
 
 /** ===============================
+ *  ACTIVATE CHACHE
+ *  =============================== */
+
+define('WP_CACHE', true);
+
+/** ===============================
  *  TABLE PREFIX
  *  =============================== */
 $table_prefix = getenv_docker('WORDPRESS_TABLE_PREFIX', 'wp_');
