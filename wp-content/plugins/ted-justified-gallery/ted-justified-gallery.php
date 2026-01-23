@@ -101,26 +101,7 @@ function ted_justified_gallery_shortcode( $atts ) {
 
     ob_start();
 
-    // HERO
-    if ( $hero_id ) {
-
-        $hero_img = wp_get_attachment_image_src( $hero_id, 'full' );
-        if ( $hero_img ) {
-            $hero_url = $hero_img[0];
-            $hero_alt = get_post_meta( $hero_id, '_wp_attachment_image_alt', true );
-            ?>
-            <div class="tjg-hero">
-                <a href="<?php echo esc_url( $hero_url ); ?>" class="tjg-hero-link tjg-link">
-                    <img
-                        src="<?php echo esc_url( $hero_url ); ?>"
-                        alt="<?php echo esc_attr( $hero_alt ); ?>"
-                        loading="lazy"
-                    >
-                </a>
-            </div>
-            <?php
-        }
-    }
+    
 
     // GALLERIA JUSTIFIED sotto l'hero
     if ( ! empty( $ids ) ) : ?>
@@ -162,6 +143,27 @@ function ted_justified_gallery_shortcode( $atts ) {
         </div>
     <?php
     endif;
+
+    // HERO
+    if ( $hero_id ) {
+
+        $hero_img = wp_get_attachment_image_src( $hero_id, 'full' );
+        if ( $hero_img ) {
+            $hero_url = $hero_img[0];
+            $hero_alt = get_post_meta( $hero_id, '_wp_attachment_image_alt', true );
+            ?>
+            <div class="tjg-hero">
+                <a href="<?php echo esc_url( $hero_url ); ?>" class="tjg-hero-link tjg-link">
+                    <img
+                        src="<?php echo esc_url( $hero_url ); ?>"
+                        alt="<?php echo esc_attr( $hero_alt ); ?>"
+                        loading="lazy"
+                    >
+                </a>
+            </div>
+            <?php
+        }
+    }
 
     return ob_get_clean();
 }
