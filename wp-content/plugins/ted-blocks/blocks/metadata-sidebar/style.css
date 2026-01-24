@@ -1,0 +1,22 @@
+.ted-sidebar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.ted-sidebar-metadata  {
+  
+  
+}
+
+.ted-sidebar-metadata p  {
+  margin: 0;
+  
+}
+
+.ted-sidebar-metadata .ted-sidebar-metadata-label {
+  color: rgb(103, 103, 103);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  
+}

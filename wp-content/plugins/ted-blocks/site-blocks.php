@@ -19,4 +19,5 @@ add_action('init', function () {
     // Register blocks from block.json metadata
     register_block_type_from_metadata(SB_PLUGIN_DIR . 'blocks/dynamic-date');
     register_block_type_from_metadata(SB_PLUGIN_DIR . 'blocks/acf-repeater');
+    register_block_type_from_metadata(SB_PLUGIN_DIR . 'blocks/metadata-sidebar');
 });

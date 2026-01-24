@@ -1,0 +1,26 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "site-blocks/metadata-sidebar",
+  "title": "Metadata Sidebar",
+  "category": "widgets",
+  "icon": "calendar",
+  "description": "Metadata Sidebar Block",
+  "keywords": ["sidebar", "acf"],
+
+  "style": "file:./style.css",
+  "editorStyle": "file:./editor.css",
+
+  "acf": {
+    "blockVersion": 3,
+    "renderTemplate": "render.php",
+    "mode": "preview"
+  },
+
+  "supports": {
+    "align": true,
+    "color": { "text": true, "background": false },
+    "typography": { "fontSize": true, "lineHeight": true },
+    "spacing": { "margin": true, "padding": true }
+  }
+}
