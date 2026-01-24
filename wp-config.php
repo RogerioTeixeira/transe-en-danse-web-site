@@ -57,6 +57,7 @@ $table_prefix = getenv_docker('WORDPRESS_TABLE_PREFIX', 'wp_');
  *  DEBUG
  *  =============================== */
 define('WP_DEBUG', !!getenv_docker('WORDPRESS_DEBUG', ''));
+define('WP_DEBUG_DISPLAY', false);
 
 /** ======================================================
  *  🔥 AZURE APP SERVICE / REVERSE PROXY FIX (CRITICO)

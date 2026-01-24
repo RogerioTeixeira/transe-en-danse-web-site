@@ -16,6 +16,7 @@ services:
       - WORDPRESS_DB_HOST=db
       - WORDPRESS_DB_USER=root
       - WORDPRESS_DB_PASSWORD=password
+      - WORDPRESS_DEBUG=true
     depends_on:
       - db
       - phpmyadmin
