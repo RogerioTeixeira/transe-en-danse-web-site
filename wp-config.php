@@ -61,7 +61,7 @@ define('WP_DEBUG_DISPLAY', false);
 /** ===============================
  *  ENV SWITCH (local / production)
  *  =============================== */
-$env = getenv_docker('ENV', 'local');
+$env = getenv_docker('WORDPRESS_ENV', 'local');
 
 /** ===============================
  *  Canonical Site URL
