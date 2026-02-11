@@ -1,10 +1,10 @@
 ﻿=== Polylang Duplicate Content Addon ===
-Contributors:coolplugins, khushwantsidhu,narinder-singh,satindersingh
+Contributors:khushwantsidhu
 Tags: Polylang, duplicate page, Automatic Translation, AI translation, Content duplication
 Requires at least:5.0
-Tested up to:6.8
+Tested up to:6.9.1
 Requires PHP:7.2
-Stable tag:1.2.8
+Stable tag:2.0.0
 Author URI:https://profiles.wordpress.org/khushwantsidhu/
 License:GPLv2 or later
 License URI:http://www.gnu.org/licenses/gpl-2.0.html
@@ -142,12 +142,18 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
+= Version 2.0.0 | 06 Feb 2026 =
+- **Improvements:** Enhanced UI for both Classic Editor and Gutenberg blocks.
+- **Improvements:** Overall code optimization and performance improvements.
+
+= Version 1.2.9 | 29 Jan 2026 =
+- **Fixed:** Fixed issues reported by “Plugin Check” plugin.
+
 = Version 1.2.8 | 18 Nov 2025 =
 - **Fixed:** PHP undefined array key issue.
 
 = Version 1.2.7 | 23 Aug 2025 =
 - **Fixed:** Admin folder path issue.
-
 = Version 1.2.6 | 23 Aug 2025 =
 - **Fixed:** Security issues.
 - **Improved:** Feedback Notice.

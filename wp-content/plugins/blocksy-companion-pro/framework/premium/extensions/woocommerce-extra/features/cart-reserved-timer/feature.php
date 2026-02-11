@@ -414,7 +414,7 @@ class CartReservedTimer {
 			blc_theme_functions()->blocksy_get_theme_mod(
 				'woo_reserved_timer_message',
 				// phpcs:ignore WordPress.WP.I18n.NoHtmlWrappedStrings
-				__('<p><strong>🔥 Hurry up! Your selected items are reserved for {time} minutes.</strong></p>', 'blocksy-companion')
+				__('<p><strong>🔥 Hurry up! Your selected items are in high demand!</strong><br>Your cart will be reserved for {time} minutes.</p>', 'blocksy-companion')
 			)
 		);
 

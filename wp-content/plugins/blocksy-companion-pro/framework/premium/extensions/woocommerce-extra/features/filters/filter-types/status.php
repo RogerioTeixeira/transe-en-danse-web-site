@@ -62,9 +62,7 @@ class StatusFilter extends BaseFilter {
 
 			$statuses_html[] = blocksy_html_tag(
 				'li',
-				[
-					'class' => 'ct-filter-item' . ($is_active ? ' active' : ''),
-				],
+				['class' => 'ct-filter-item'],
 				blocksy_html_tag(
 					'div',
 					[
@@ -72,13 +70,18 @@ class StatusFilter extends BaseFilter {
 					],
 					blocksy_html_tag(
 						'a',
-						[
-							'href' => $api_url,
-							'rel' => 'nofollow',
-							'aria-label' => $status['label'],
-							'data-key' => 'filter_stock_status',
-							'data-value' => $status['id'],
-						],
+						array_merge(
+							[
+								'href' => $api_url,
+								'rel' => 'nofollow',
+								'aria-label' => $status['label'],
+								'data-key' => 'filter_stock_status',
+								'data-value' => $status['id'],
+							],
+							(
+								$is_active ? ['class' => 'active'] : []
+							)
+						),
 						($attributes['showCheckboxes'] ? blocksy_html_tag(
 							'input',
 							array_merge(
@@ -224,7 +227,7 @@ class StatusFilter extends BaseFilter {
 
 		if (in_array('on_sale', $picked_statuses)) {
 			if (! isset($this->product_ids_cache['on_sale'])) {
-				$this->product_ids_cache['on_sale'] = wc_get_product_ids_on_sale();
+				$this->product_ids_cache['on_sale'] = blc_get_product_ids_on_sale();
 			}
 
 			$final_product_ids = array_merge(

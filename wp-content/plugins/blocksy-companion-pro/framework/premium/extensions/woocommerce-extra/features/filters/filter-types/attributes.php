@@ -181,15 +181,6 @@ class AttributesFilter extends BaseFilter {
 
 			$item_classes = ['ct-filter-item'];
 
-			if (
-				FilterPresenter::is_filter_active(
-					$this->get_filter_name(),
-					$value->slug
-				)
-			) {
-				$item_classes[] = 'active';
-			}
-
 			$checbox_html = $this->attributes['showAttributesCheckbox']
 				? blocksy_html_tag(
 					'input',
@@ -223,13 +214,21 @@ class AttributesFilter extends BaseFilter {
 					],
 					blocksy_html_tag(
 						'a',
-						[
-							'href' => esc_url($api_url),
-							'rel' => 'nofollow',
-							'aria-label' => $value->name,
-							'data-key' => $attribute_slug,
-							'data-value' => $value->term_id,
-						],
+						array_merge(
+							[
+								'href' => esc_url($api_url),
+								'rel' => 'nofollow',
+								'aria-label' => $value->name,
+								'data-key' => $attribute_slug,
+								'data-value' => $value->term_id,
+							],
+							(
+								FilterPresenter::is_filter_active(
+									$this->get_filter_name(),
+									$value->slug
+								) ? ['class' => 'active'] : []
+							)
+						),
 						$checbox_html .
 						$swatch_term_html .
 							$label_html .

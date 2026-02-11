@@ -6,10 +6,64 @@ import { scrollLockManager } from './scroll-lock'
 
 import { mountAdditionalCloseForPopup } from './popup-additional-close'
 
+let popupStack = []
+
+const getPopupStack = () => popupStack
+
 const onKeydown = (event) => {
 	if (event.keyCode !== 27) return
-	;[...document.querySelectorAll('.ct-popup.active')].map((popup) => {
-		closeMicroPopup(popup)
+	if (popupStack.length === 0) return
+
+	const topmostPopup = popupStack[popupStack.length - 1]
+
+	let maybeCloseStrategies = {}
+
+	if (topmostPopup.dataset.popupCloseStrategy) {
+		maybeCloseStrategies = JSON.parse(topmostPopup.dataset.popupCloseStrategy)
+	}
+
+	if (maybeCloseStrategies.esc) {
+		closeMicroPopup(topmostPopup)
+	}
+}
+
+const addToPopupStack = (popup) => {
+	const wasEmpty = popupStack.length === 0
+
+	if (!popupStack.includes(popup)) {
+		popupStack.push(popup)
+	}
+
+	if (wasEmpty) {
+		document.addEventListener('keyup', onKeydown)
+	}
+
+	updatePopupZIndexes()
+}
+
+const removeFromPopupStack = (popup) => {
+	const index = popupStack.indexOf(popup)
+
+	if (index > -1) {
+		popupStack.splice(index, 1)
+	}
+
+	popup.style.removeProperty('--popup-z-index')
+
+	if (popupStack.length === 0) {
+		document.removeEventListener('keyup', onKeydown)
+	}
+
+	updatePopupZIndexes()
+}
+
+const updatePopupZIndexes = () => {
+	popupStack.forEach((popup, index) => {
+		if (index === 0) {
+			popup.style.removeProperty('--popup-z-index')
+		} else {
+			popup.style.setProperty('--popup-z-index', index)
+		}
 	})
 }
 
@@ -44,6 +98,8 @@ export const closeMicroPopup = (popup, args = {}) => {
 			})
 		)
 
+		removeFromPopupStack(popup)
+
 		popup.classList.toggle('active')
 
 		setTimeout(() => {
@@ -57,7 +113,16 @@ export const closeMicroPopup = (popup, args = {}) => {
 		}, 500)
 
 		if (popup.dataset.focusTrap !== 'no') {
-			focusLockManager().focusLockOff(popup)
+			focusLockManager().focusLockOff()
+
+			// Re-lock focus on previous popup in stack
+			if (popupStack.length > 0) {
+				const previousPopup = popupStack[popupStack.length - 1]
+
+				if (previousPopup.dataset.focusTrap !== 'no') {
+					focusLockManager().focusLockOn(previousPopup)
+				}
+			}
 		}
 
 		if (popup.dataset.scrollLock) {
@@ -78,8 +143,6 @@ export const closeMicroPopup = (popup, args = {}) => {
 			i.src = source
 		})
 
-		document.removeEventListener('keyup', onKeydown)
-
 		if (popup.unmount && args.unmount) {
 			popup.unmount()
 		}
@@ -90,6 +153,8 @@ const actuallyOpenPopup = (popup) => {
 	const popupId = popup.id.replace('ct-popup-', '')
 	ctEvents.trigger('blocksy:micro-popups:open', popupId, popup)
 	ctEvents.trigger('blocksy:frontend:init')
+
+	addToPopupStack(popup)
 
 	popup.classList.add('active')
 
@@ -141,10 +206,6 @@ const actuallyOpenPopup = (popup) => {
 				}
 			})
 		}
-	}
-
-	if (maybeCloseStrategies.esc) {
-		document.addEventListener('keyup', onKeydown)
 	}
 
 	if (maybeCloseStrategies.form_submit || maybeCloseStrategies.button_click) {

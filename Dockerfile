@@ -1,4 +1,4 @@
-FROM wordpress:6.9.0-php8.5-apache
+FROM wordpress:6.9.1-php8.5-apache
 
 COPY config/upload.ini $PHP_INI_DIR/conf.d/
 

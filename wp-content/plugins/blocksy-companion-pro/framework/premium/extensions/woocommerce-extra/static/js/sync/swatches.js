@@ -179,13 +179,13 @@ export const collectVariablesForSwatches = () => ({
 		},
 
 		{
-			selector: '[data-swatches-type="color"] > *:hover .ct-swatch',
+			selector: '[data-swatches-type="color"] :where(:not(.ct-out-of-stock)):hover .ct-swatch',
 			variable: 'swatch-border-color',
 			type: 'color:hover',
 		},
 
 		{
-			selector: '[data-swatches-type="color"] > *.active .ct-swatch',
+			selector: '[data-swatches-type="color"] .active .ct-swatch',
 			variable: 'swatch-border-color',
 			type: 'color:active',
 		},
@@ -199,13 +199,13 @@ export const collectVariablesForSwatches = () => ({
 		},
 
 		{
-			selector: '[data-swatches-type="image"] > *:hover .ct-swatch',
+			selector: '[data-swatches-type="image"] :where(:not(.ct-out-of-stock)):hover .ct-swatch',
 			variable: 'swatch-border-color',
 			type: 'color:hover',
 		},
 
 		{
-			selector: '[data-swatches-type="image"] > *.active .ct-swatch',
+			selector: '[data-swatches-type="image"] .active .ct-swatch',
 			variable: 'swatch-border-color',
 			type: 'color:active',
 		},
@@ -219,13 +219,13 @@ export const collectVariablesForSwatches = () => ({
 		},
 
 		{
-			selector: '[data-swatches-type="button"] > *:hover .ct-swatch',
+			selector: '[data-swatches-type="button"] :where(:not(.ct-out-of-stock)):hover .ct-swatch',
 			variable: 'swatch-button-text-color',
 			type: 'color:hover',
 		},
 
 		{
-			selector: '[data-swatches-type="button"] > *.active .ct-swatch',
+			selector: '[data-swatches-type="button"] .active .ct-swatch',
 			variable: 'swatch-button-text-color',
 			type: 'color:active',
 		},
@@ -239,13 +239,13 @@ export const collectVariablesForSwatches = () => ({
 		},
 
 		{
-			selector: '[data-swatches-type="button"] > *:hover .ct-swatch',
+			selector: '[data-swatches-type="button"] :where(:not(.ct-out-of-stock)):hover .ct-swatch',
 			variable: 'swatch-button-border-color',
 			type: 'color:hover',
 		},
 
 		{
-			selector: '[data-swatches-type="button"] > *.active .ct-swatch',
+			selector: '[data-swatches-type="button"] .active .ct-swatch',
 			variable: 'swatch-button-border-color',
 			type: 'color:active',
 		},
@@ -259,13 +259,13 @@ export const collectVariablesForSwatches = () => ({
 		},
 
 		{
-			selector: '[data-swatches-type="button"] > *:hover .ct-swatch',
+			selector: '[data-swatches-type="button"] :where(:not(.ct-out-of-stock)):hover .ct-swatch',
 			variable: 'swatch-button-background-color',
 			type: 'color:hover',
 		},
 
 		{
-			selector: '[data-swatches-type="button"] > *.active .ct-swatch',
+			selector: '[data-swatches-type="button"] .active .ct-swatch',
 			variable: 'swatch-button-background-color',
 			type: 'color:active',
 		},
@@ -279,13 +279,13 @@ export const collectVariablesForSwatches = () => ({
 		},
 
 		{
-			selector: '[data-swatches-type="mixed"] > *:hover .ct-swatch',
+			selector: '[data-swatches-type="mixed"] :where(:not(.ct-out-of-stock)):hover .ct-swatch',
 			variable: 'swatch-border-color',
 			type: 'color:hover',
 		},
 
 		{
-			selector: '[data-swatches-type="mixed"] > *.active .ct-swatch',
+			selector: '[data-swatches-type="mixed"] .active .ct-swatch',
 			variable: 'swatch-border-color',
 			type: 'color:active',
 		},

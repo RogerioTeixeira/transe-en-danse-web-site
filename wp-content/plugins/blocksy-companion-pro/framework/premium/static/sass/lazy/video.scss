@@ -53,6 +53,13 @@
 			&:not(:hover) .ct-video-indicator {
 				opacity: 0;
 			}
+
+			// hide pause button on touch devices
+			@media (hover: none) {
+				.ct-video-indicator {
+					display: none;
+				}
+			}
 		}
 
 		&[data-state*='paused'] {

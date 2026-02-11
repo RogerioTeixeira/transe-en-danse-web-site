@@ -9,7 +9,7 @@
 
 // a helper function to lookup "env_FILE", "env", then fallback
 if (!function_exists('getenv_docker')) {
-    function getenv_docker($env, $default) {
+    function getenv_docker($env, $default = null) {
         if ($fileEnv = getenv($env . '_FILE')) {
             return rtrim(file_get_contents($fileEnv), "\r\n");
         } elseif (($val = getenv($env)) !== false) {
@@ -43,9 +43,8 @@ define('LOGGED_IN_SALT',   getenv_docker('WORDPRESS_LOGGED_IN_SALT',   'put your
 define('NONCE_SALT',       getenv_docker('WORDPRESS_NONCE_SALT',       'put your unique phrase here'));
 
 /** ===============================
- *  ACTIVATE CHACHE
+ *  CACHE
  *  =============================== */
-
 define('WP_CACHE', true);
 
 /** ===============================
@@ -59,25 +58,52 @@ $table_prefix = getenv_docker('WORDPRESS_TABLE_PREFIX', 'wp_');
 define('WP_DEBUG', !!getenv_docker('WORDPRESS_DEBUG', ''));
 define('WP_DEBUG_DISPLAY', false);
 
-/** ======================================================
- *  🔥 AZURE APP SERVICE / REVERSE PROXY FIX (CRITICO)
- *  ====================================================== */
+/** ===============================
+ *  ENV SWITCH (local / production)
+ *  =============================== */
+$env = getenv_docker('ENV', 'local');
 
-// Canonical URL (blocca redirect strani)
-define('WP_HOME', 'https://staging.transe-en-danse.org');
-define('WP_SITEURL', 'https://staging.transe-en-danse.org');
+/** ===============================
+ *  Canonical Site URL
+ *  =============================== */
+if ($env === 'production') {
 
-// HTTPS dietro reverse proxy
-if (
-    isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
-    strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false
-) {
-    $_SERVER['HTTPS'] = 'on';
+    $site_url = getenv_docker('WORDPRESS_SITE_URL');
+
+    if (empty($site_url)) {
+        die('WORDPRESS_SITE_URL missing in production');
+    }
+
+} else {
+
+    // Local Docker fallback
+    $site_url = 'http://localhost:8080';
 }
 
-// 🔥 FIX PORT (8080 → 443)
-if (isset($_SERVER['HTTP_X_FORWARDED_PORT'])) {
-    $_SERVER['SERVER_PORT'] = 443;
+define('WP_HOME', $site_url);
+define('WP_SITEURL', $site_url);
+
+/** ===============================
+ *  Reverse proxy HTTPS (Azure only)
+ *  =============================== */
+if ($env === 'production') {
+
+    if (
+        isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+        strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false
+    ) {
+        $_SERVER['HTTPS'] = 'on';
+    }
+
+    if (isset($_SERVER['HTTP_X_FORWARDED_PORT'])) {
+        $_SERVER['SERVER_PORT'] = 443;
+    }
+
+} else {
+
+    // Local Docker: never force SSL
+    define('FORCE_SSL_ADMIN', false);
+    $_SERVER['HTTPS'] = 'off';
 }
 
 /** ===============================

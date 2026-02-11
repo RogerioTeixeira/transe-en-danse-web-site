@@ -53,27 +53,26 @@ const handleKeydown = (e) => {
 }
 
 const focusLockOn = (element) => {
-	if (lockedElement && lockedElement !== element) {
-		return
-	}
-
 	const focusableEls = element.querySelectorAll(tabbables.join(','))
 
 	if (focusableEls.length === 0) {
 		return
 	}
 
+	if (!lockedElement) {
+		document.addEventListener('keydown', handleKeydown)
+	}
+
 	lockedElement = element
-	document.addEventListener('keydown', handleKeydown)
 
 	setTimeout(() => {
 		focusableEls[0].focus()
 	}, 50)
 }
 
-const focusLockOff = (element) => {
-	element.removeEventListener('keydown', handleKeydown)
+const focusLockOff = () => {
 	lockedElement = null
+	document.removeEventListener('keydown', handleKeydown)
 }
 
 export const focusLockManager = () => {

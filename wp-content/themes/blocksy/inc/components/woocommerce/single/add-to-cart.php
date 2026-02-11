@@ -74,6 +74,14 @@ class WooCommerceAddToCart {
 			return;
 		}
 
+		// Signal that this is an AJAX request for plugins that check wp_doing_ajax().
+		// Since this request doesn't go through admin-ajax.php, the DOING_AJAX constant
+		// is not defined. Plugins like "Advanced Product Fields for WooCommerce" use
+		// wp_doing_ajax() to detect mini-cart context and display custom field data.
+		//
+		// https://wordpress.org/plugins/advanced-product-fields-for-woocommerce/
+		add_filter('wp_doing_ajax', '__return_true');
+
 		ob_start();
 		wc_print_notices();
 		$notices = ob_get_clean();

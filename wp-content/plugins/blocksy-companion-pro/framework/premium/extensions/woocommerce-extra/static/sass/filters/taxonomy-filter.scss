@@ -44,7 +44,7 @@
 			border: 2px solid var(--theme-border-color);
 		}
 
-		.ct-filter-item:is(:hover, .active) {
+		a:is(:hover, .active) {
 
 			.ct-media-container {
 				border-color: var(--theme-link-hover-color);

@@ -28,7 +28,6 @@
 		display: flex;
 		align-items: center;
 		gap: 10px;
-		// height: 100%;
 
 		a {
 			display: flex;
@@ -57,20 +56,24 @@
 					border-color 0.12s cubic-bezier(0.455, 0.03, 0.515, 0.955);
 			}
 
-			&:hover {
+			&:is(:hover, .active) {
+
 				> .ct-filter-count {
 					color: #fff;
 					background: var(--theme-link-hover-color);
 					border-color: var(--theme-link-hover-color);
 				}
 			}
+
+			&.active {
+
+				.ct-filter-label {
+					font-weight: 600;
+				}
+			}
 		}
 	}
 
-	.active > .ct-filter-item-inner .ct-filter-label {
-		font-weight: 600;
-		// color: var(--theme-link-hover-color);
-	}
 
 	// counter inside label
 	.ct-filter-label .ct-filter-count {

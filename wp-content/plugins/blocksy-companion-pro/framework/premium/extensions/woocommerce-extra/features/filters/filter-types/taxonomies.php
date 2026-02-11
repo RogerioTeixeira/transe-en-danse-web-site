@@ -644,15 +644,6 @@ class TaxonomiesFilter extends BaseFilter {
 
 		$item_classes = ['ct-filter-item'];
 
-		if (
-			FilterPresenter::is_filter_active(
-				$this->get_filter_name(),
-				$term->term_id
-			)
-		) {
-			$item_classes[] = 'active';
-		}
-
 		return blocksy_html_tag(
 			'li',
 			[
@@ -665,13 +656,21 @@ class TaxonomiesFilter extends BaseFilter {
 				],
 				blocksy_html_tag(
 					'a',
-					[
-						'href' => esc_url($api_url),
-						'rel' => 'nofollow',
-						'aria-label' => $term->name,
-						'data-key' => $this->attributes['taxonomy'],
-						'data-value' => $term->term_id,
-					],
+					array_merge(
+						[
+							'href' => esc_url($api_url),
+							'rel' => 'nofollow',
+							'aria-label' => $term->name,
+							'data-key' => $this->attributes['taxonomy'],
+							'data-value' => $term->term_id,
+						],
+						(
+							FilterPresenter::is_filter_active(
+								$this->get_filter_name(),
+								$term->term_id
+							) ? ['class' => 'active'] : []
+						)
+					),
 					$checbox_html .
 					$tax_image .
 					$label_html .

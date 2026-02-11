@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Blocksy Companion Pro package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-12-22 21:13:21+0000\n"
+"PO-Revision-Date: 2026-01-25 13:14:34+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -266,7 +266,7 @@ msgstr "Сообщество в Facebook"
 
 #: static/js/dashboard/helpers/SubmitSupport.js:35
 msgid "Share ideas, help others, ask questions and discuss your next project in our friendly community."
-msgstr "Делитесь идеями, помогайте другим, задавайте вопросы и обсуждайте свой следующий проект в нашем дружелюбном сообществе."
+msgstr "��елитесь идеями, помогайте другим, задавайте вопросы и обсуждайте свой следующий проект в нашем дружелюбном сообществе."
 
 #: static/js/dashboard/helpers/SubmitSupport.js:43
 msgid "Join Our Community"
@@ -340,7 +340,7 @@ msgstr "Несоответствие"
 
 #: framework/theme-integration.php:89
 msgid "This field is required"
-msgstr "Это поле является обязательным"
+msgstr "Это поле является обязател��ным"
 
 #: framework/theme-integration.php:90
 msgid "Please fix this field."
@@ -372,7 +372,7 @@ msgstr "Вводите только цифры."
 
 #: framework/theme-integration.php:97
 msgid "Please enter a valid credit card number."
-msgstr "Введите действительный ном��р банковской карты."
+msgstr "Введите действительный номер банковской карты."
 
 #: framework/theme-integration.php:98
 msgid "Please enter the same value again."
@@ -413,7 +413,7 @@ msgstr "Имя пользователя X (Twitter)"
 
 #: framework/features/svg.php:28
 msgid "This file does not appear to be a valid SVG file."
-msgstr "Этот файл, вероятно, не является допустимым файлом SVG."
+msgstr "Этот файл, вер��ятно, не является допустимым файлом SVG."
 
 #: framework/features/svg.php:37
 msgid "SVG files cannot contain PHP code."
@@ -623,7 +623,7 @@ msgstr "Выберите файл WXR (.xml) для загрузки, затем
 #. translators: %1$s is the error message, %2$s is the line number
 #: framework/premium/features/code-editor.php:116
 msgid "Code execution has been canceled due to error: %1$s on line: %2$s"
-msgstr "Выполнение кода было отменено из-за ошибки: %1$s в строке: %2$s!"
+msgstr "Выполнение кода было отменено из-за ошибки: %1$s в строк��: %2$s!"
 
 #. translators: %1$s is the post type name, %2$s is the post edit link
 #: framework/premium/features/code-editor.php:132
@@ -1268,7 +1268,7 @@ msgstr "Набор современных шрифтов"
 #: framework/premium/extensions/custom-fonts/dashboard-static/js/CustomFonts.js:142
 #: framework/premium/extensions/custom-fonts/dashboard-static/js/Uploader.js:330
 msgid "Add Fonts"
-msgstr "Добить шрифты"
+msgstr "Добавить шрифты"
 
 #: framework/premium/extensions/custom-fonts/dashboard-static/js/StackTab.js:21
 msgid "Font Stacks"
@@ -1576,7 +1576,7 @@ msgstr "Предзаказ подтверждён"
 
 #: framework/premium/extensions/woocommerce-extra/features/product-waitlist/includes/emails/subscription-confirmed.php:11
 msgid "You will be notified when {product_title} is back in stock"
-msgstr "Вы будете уведомле��ы, когда {product_title} снова появится на складе."
+msgstr "Вы будете уведом��ены, когда {product_title} снова появится на складе."
 
 #: framework/premium/extensions/woocommerce-extra/features/product-waitlist/includes/emails/waitlist-email.php:56,
 #: framework/premium/extensions/woocommerce-extra/features/product-waitlist/includes/emails/waitlist-email.php:192
@@ -1688,7 +1688,7 @@ msgstr "отписаться"
 #: framework/premium/extensions/woocommerce-extra/features/product-waitlist/templates/emails/waitlist-subscription-confirmed.php:31,
 #: framework/premium/extensions/woocommerce-extra/features/product-waitlist/templates/emails/plain/waitlist-subscription-confirmed.php:15
 msgid "You have been successfully added to the waitlist for the following item:"
-msgstr "Вы добавлены в спи��ок ожидания следующего товара:"
+msgstr "Вы добавлены в с��исок ожидания следующего товара:"
 
 #: framework/premium/extensions/woocommerce-extra/features/product-waitlist/templates/emails/plain/waitlist-back-in-stock.php:29,
 #: framework/premium/extensions/woocommerce-extra/features/product-waitlist/templates/emails/plain/waitlist-confirm-subscription.php:17
@@ -1755,7 +1755,7 @@ msgstr "Длина описания"
 
 #: framework/premium/extensions/woocommerce-extra/features/added-to-cart-popup/customizer-options.php:115
 msgid "Cart Button"
-msgstr "Кнопка кор��ины"
+msgstr "Кнопка к��рзины"
 
 #: framework/premium/extensions/woocommerce-extra/features/added-to-cart-popup/customizer-options.php:125
 msgid "Checkout Button"
@@ -1846,7 +1846,7 @@ msgstr "Оформление"
 
 #: framework/premium/extensions/woocommerce-extra/features/added-to-cart-popup/views/product-actions.php:44
 msgid "Continue Shopping"
-msgstr "Продолжить поку��ки"
+msgstr "Продолжить по��упки"
 
 #: framework/extensions/newsletter-subscribe/dashboard-static/js/EditCredentials.js:424
 msgid "More information on how to create a list in MailPoet can be found %shere%s."
@@ -2422,7 +2422,7 @@ msgstr "Вид сетки"
 #: static/js/editor/blocks/post-template/Edit.js:371
 #: static/js/editor/blocks/tax-template/Edit.js:309
 msgid "Tablet Columns"
-msgstr "Колонки пла��шета"
+msgstr "Колонки п��аншета"
 
 #: static/js/editor/blocks/post-template/Edit.js:380
 #: static/js/editor/blocks/tax-template/Edit.js:319
@@ -3429,7 +3429,7 @@ msgstr "Это профессиональный стартовый сайт"
 
 #: static/js/dashboard/screens/DemoInstall/SingleDemo.js:54
 msgid "Upgrade to any pro plan and get instant access to this starter site and many other features."
-msgstr "Перейдите на любой профессиона��ьный тариф и получите мгновенный доступ к этому стартовому сайту и многим другим функциям."
+msgstr "Перейдите на любой профессио��альный тариф и получите мгновенный доступ к этому стартовому сайту и многим другим функциям."
 
 #: static/js/dashboard/screens/DemoInstall/SingleDemo.js:61
 msgid "Upgrade to the business or agency plan and get instant access to this starter site and many other features."
@@ -3664,7 +3664,7 @@ msgstr "Адрес доставки"
 
 #: framework/premium/extensions/woocommerce-extra/static/js/blocks/ct-order/OrderDetails.js:64
 msgid "Subtotal"
-msgstr "Подыт��г"
+msgstr "Подытог"
 
 #: framework/premium/extensions/woocommerce-extra/static/js/blocks/ct-order/OrderDetails.js:77
 msgid "Shipping"
@@ -4213,7 +4213,7 @@ msgstr "Кнопка"
 
 #: framework/premium/extensions/woocommerce-extra/features/quick-view/options.php:72
 msgid "Modal Trigger"
-msgstr "Триггер модального ок��а"
+msgstr "Триггер модального окна"
 
 #: framework/premium/extensions/woocommerce-extra/features/quick-view/options.php:82
 msgid "Card"
@@ -4541,7 +4541,7 @@ msgstr "Заголовок партнёрской ссылки"
 #: framework/premium/extensions/woocommerce-extra/features/affiliate/options.php:57,
 #: framework/premium/extensions/woocommerce-extra/features/affiliate/options.php:90
 msgid "Open Button Link In New Tab"
-msgstr "Открывать кнопкой но��ую вкладку"
+msgstr "Открывать кноп��ой новую вкладку"
 
 #: framework/premium/extensions/woocommerce-extra/features/cart-page/options.php:14
 msgid "Quantity Auto Update"
@@ -5471,7 +5471,7 @@ msgstr "Набор функций, позволяющих легко созда�
 
 #: framework/helpers/exts-configs.php:270
 msgid "Compare View"
-msgstr "Таблица сравнения"
+msgstr "Таблица сравне��ия"
 
 #: framework/helpers/exts-configs.php:239
 msgid "Adds the “add to cart” actions to the product page as a floating bar if the product summary has disappeared from view."
@@ -6233,7 +6233,7 @@ msgstr "Ваша учётная запись была успешно созда�
 #: framework/extensions/cookies-consent/customizer.php:5
 msgctxt "Extension Brand Name"
 msgid "Cookies Consent"
-msgstr "Согласие на cookie"
+msgstr "Согласие на куки"
 
 #: framework/extensions/cookies-consent/customizer.php:76
 msgid "Accept Button text"
@@ -8350,7 +8350,7 @@ msgstr "Страница списка желаний"
 
 #: framework/premium/extensions/woocommerce-extra/features/wish-list/options.php:46
 msgid "The page you select here will display the wish list for your logged out users."
-msgstr " На странице, которую вы выберете здесь, будет ��тображаться список желаний для невошедших в систему пользователей."
+msgstr " На странице, которую вы выберете здесь, будет отображаться список желаний для невошедших в систему пользователей."
 
 #: framework/premium/extensions/woocommerce-extra/features/added-to-cart-popup/customizer-options.php:25
 msgid "Archive Page"

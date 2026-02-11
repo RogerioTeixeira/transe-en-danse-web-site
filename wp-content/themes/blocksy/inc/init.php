@@ -584,6 +584,7 @@ require get_template_directory() . '/inc/integrations/coauthors.php';
 require get_template_directory() . '/inc/integrations/disqus.php';
 require get_template_directory() . '/inc/integrations/secupress.php';
 require get_template_directory() . '/inc/integrations/wpc-variations-table.php';
+require get_template_directory() . '/inc/integrations/woocommerce-composite-products.php';
 
 if (function_exists('get_rocket_cdn_url')) {
 	require get_template_directory() . '/inc/integrations/wprocket.php';

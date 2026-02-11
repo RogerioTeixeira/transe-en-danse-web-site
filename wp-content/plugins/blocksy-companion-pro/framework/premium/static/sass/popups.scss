@@ -82,7 +82,7 @@
 // popup backdrop
 [data-popup-backdrop] {
 	position: fixed;
-	z-index: 999999;
+	z-index: calc(999999 + var(--popup-z-index, 0));
 }
 
 [data-popup-backdrop='no'] {

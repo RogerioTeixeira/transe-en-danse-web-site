@@ -1,3 +1,17 @@
+2.1.27: 2026-01-30
+- Improvement: Demo importer - correctly export and import ACF custom taxonomies
+- Improvement: Dynamic data image - make sure cover type styles are loaded on demand
+
+2.1.26: 2026-01-29
+- Improvement: Advanced Posts Block - display a "no results found" message if posts don't meet the query criteria
+- Improvement: Cart Quantity Auto Update - better integration with WooCommerce Subscriptions plugin
+- Improvement: Cart Reserved Timer - correctly display the default message
+- Improvement: Don't display internal custom post types in admin nav menus panel
+- Improvement: Dynamic data - add option to show "Archive Label" if "Archive Title" source is selected
+- Improvement: Popup Content Block - automatically increase the stack level of a popup if it was opened from another popup
+- Improvement: Video thumbnail - hide the pause button automatically on non hover devices if "Simplified Player" is selected
+- Fix: Added to cart popup - fix PHP warning when rendering product sale price
+
 2.1.25: 2026-01-16
 - Improvement: Advanced Menu - Ensure dropdown for mega menus are aligned correctly
 

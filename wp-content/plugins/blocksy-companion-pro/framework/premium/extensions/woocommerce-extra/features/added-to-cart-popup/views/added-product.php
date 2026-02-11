@@ -75,14 +75,12 @@ if ($display_descriptor['show_image']) {
 }
 
 if ($display_descriptor['show_price']) {
-	$_product = apply_filters( 'woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key );
-
 	$product_price = blocksy_html_tag(
 		'span',
 		[
 			'class' => 'price',
 		],
-		$_product->get_price_html()
+		$product->get_price_html()
 	);
 }
 

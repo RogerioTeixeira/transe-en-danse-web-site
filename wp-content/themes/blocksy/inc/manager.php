@@ -162,7 +162,12 @@ class Blocksy_Manager {
 		}, 900000000);
 
 		// WP 6.9 feature that loads core block assets separately.
-		add_filter( 'should_load_separate_core_block_assets', '__return_false' );
+		// Fixed in WP 6.9.1-RC1, so we only need this workaround for earlier versions.
+		global $wp_version;
+
+		if (version_compare($wp_version, '6.9.1-RC1', '<')) {
+			add_filter('should_load_separate_core_block_assets', '__return_false');
+		}
 
 		add_action('wp_enqueue_scripts', [$this, 'enqueue_scripts'], 10);
 

@@ -316,6 +316,7 @@ class SizeGuide {
 			'show_ui' => true,
 			'show_in_menu' => 'edit.php?post_type=product',
 			'publicly_queryable' => true,
+			'show_in_nav_menus' => false,
 			'can_export' => true,
 			'query_var' => true,
 			'has_archive' => false,

@@ -1,3 +1,14 @@
+2.1.27: 2026-01-30
+- Improvement: Core accordion block - unset the extra margin from `wp-block-accordion-heading`
+- Improvement: Improve compatibility with WordPress 6.9.1 to allow separated loading of core block assets
+
+2.1.26: 2026-01-29
+- Improvement: Improve stacking order of the sidebar elements
+- Improvement: Single Product  Page - AJAX Add to Cart correct signaling of context so that mini cart fragments are rendered correctly
+- Improvement: Single Product Page - better integration with WooCommerce Composite Products plugin
+- Improvement: Visual improvements of the WooCommerce notice on mobile devices
+- Fix: Page "freezes" if an off canvas link is opened in a new tab and then the browser back button is used to navigate back
+
 2.1.25: 2026-01-16
 - Improvement: General fixes and improvements
 

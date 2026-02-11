@@ -203,6 +203,7 @@ class ContentBlocks {
 			'public' => true,
 			'show_ui' => true,
 			'publicly_queryable' => true,
+			'show_in_nav_menus' => false,
 			'can_export' => true,
 			'query_var' => true,
 			'has_archive' => false,

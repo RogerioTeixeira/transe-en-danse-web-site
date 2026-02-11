@@ -187,12 +187,12 @@ blocksy_output_colors([
 		],
 
 		'hover' => [
-			'selector' => '[data-swatches-type="color"] > *:not(.ct-out-of-stock):hover .ct-swatch',
+			'selector' => '[data-swatches-type="color"] :where(:not(.ct-out-of-stock)):hover .ct-swatch',
 			'variable' => 'swatch-border-color'
 		],
 
 		'active' => [
-			'selector' => '[data-swatches-type="color"] > *.active .ct-swatch',
+			'selector' => '[data-swatches-type="color"] .active .ct-swatch',
 			'variable' => 'swatch-border-color'
 		]
 	],
@@ -214,12 +214,12 @@ blocksy_output_colors([
 		],
 
 		'hover' => [
-			'selector' => '[data-swatches-type="image"] > *:not(.ct-out-of-stock):hover .ct-swatch',
+			'selector' => '[data-swatches-type="image"] :where(:not(.ct-out-of-stock)):hover .ct-swatch',
 			'variable' => 'swatch-border-color'
 		],
 
 		'active' => [
-			'selector' => '[data-swatches-type="image"] > *.active .ct-swatch',
+			'selector' => '[data-swatches-type="image"] .active .ct-swatch',
 			'variable' => 'swatch-border-color'
 		]
 	],
@@ -241,12 +241,12 @@ blocksy_output_colors([
 		],
 
 		'hover' => [
-			'selector' => '[data-swatches-type="button"] > *:not(.ct-out-of-stock):hover .ct-swatch',
+			'selector' => '[data-swatches-type="button"] :where(:not(.ct-out-of-stock)):hover .ct-swatch',
 			'variable' => 'swatch-button-text-color'
 		],
 
 		'active' => [
-			'selector' => '[data-swatches-type="button"] > *.active .ct-swatch',
+			'selector' => '[data-swatches-type="button"] .active .ct-swatch',
 			'variable' => 'swatch-button-text-color'
 		]
 	],
@@ -268,12 +268,12 @@ blocksy_output_colors([
 		],
 
 		'hover' => [
-			'selector' => '[data-swatches-type="button"] > *:not(.ct-out-of-stock):hover .ct-swatch',
+			'selector' => '[data-swatches-type="button"] :where(:not(.ct-out-of-stock)):hover .ct-swatch',
 			'variable' => 'swatch-button-border-color'
 		],
 
 		'active' => [
-			'selector' => '[data-swatches-type="button"] > *.active .ct-swatch',
+			'selector' => '[data-swatches-type="button"] .active .ct-swatch',
 			'variable' => 'swatch-button-border-color'
 		]
 	],
@@ -295,12 +295,12 @@ blocksy_output_colors([
 		],
 
 		'hover' => [
-			'selector' => '[data-swatches-type="button"] > *:hover .ct-swatch',
+			'selector' => '[data-swatches-type="button"] :where(:not(.ct-out-of-stock)):hover .ct-swatch',
 			'variable' => 'swatch-button-background-color'
 		],
 
 		'active' => [
-			'selector' => '[data-swatches-type="button"] > *.active .ct-swatch',
+			'selector' => '[data-swatches-type="button"] .active .ct-swatch',
 			'variable' => 'swatch-button-background-color'
 		]
 	],
@@ -322,12 +322,12 @@ blocksy_output_colors([
 		],
 
 		'hover' => [
-			'selector' => '[data-swatches-type="mixed"] > *:hover .ct-swatch',
+			'selector' => '[data-swatches-type="mixed"] :where(:not(.ct-out-of-stock)):hover .ct-swatch',
 			'variable' => 'swatch-border-color'
 		],
 
 		'active' => [
-			'selector' => '[data-swatches-type="mixed"] > *.active .ct-swatch',
+			'selector' => '[data-swatches-type="mixed"] .active .ct-swatch',
 			'variable' => 'swatch-border-color'
 		]
 	],

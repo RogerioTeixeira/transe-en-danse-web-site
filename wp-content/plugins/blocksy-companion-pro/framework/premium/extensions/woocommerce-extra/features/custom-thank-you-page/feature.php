@@ -507,6 +507,7 @@ class CustomThankYouPage {
 			'show_ui' => true,
 			'show_in_menu' => current_user_can('manage_options') ? 'woocommerce-marketing' : false,
 			'publicly_queryable' => true,
+			'show_in_nav_menus' => false,
 			'can_export' => true,
 			'query_var' => true,
 			'has_archive' => false,

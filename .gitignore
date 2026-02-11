@@ -25,6 +25,8 @@
 # Uploads
 /wp-content/uploads/
 
+/db-backups/
+
 # Log files
 *.log
 

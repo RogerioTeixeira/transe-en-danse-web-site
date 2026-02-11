@@ -28,9 +28,9 @@ export const wooEntryPoints = [
 				//
 				// Same situation for arrows, we should not interfere with their
 				// click events.
-				ignoredEls: ['.flexy-pills', '[class*="flexy-arrow-"]'],
-			},
-		],
+				ignoredEls: ['.flexy-pills', '[class*="flexy-arrow-"]']
+			}
+		]
 	},
 
 	{
@@ -46,20 +46,26 @@ export const wooEntryPoints = [
 		)
 			? {}
 			: {
-					trigger: ['hover'],
-			  }),
+					trigger: ['hover']
+				})
 	},
 
 	{
 		els: '.quantity .ct-increase, .quantity .ct-decrease',
 		load: () => import('./quantity-input'),
-		trigger: ['click'],
+		trigger: ['click']
 	},
 
 	{
 		els: '.ct-woocommerce-cart-form .quantity .qty',
 		load: () => import('./quantity-input'),
-		trigger: ['change'],
+		trigger: ['change']
+	},
+
+	{
+		els: '.ct-cart-auto-update .woocommerce-cart-form__cart-item input:not(.qty)',
+		load: () => import('./additional-inputs-autoupdate'),
+		trigger: ['change']
 	},
 
 	{
@@ -68,22 +74,22 @@ export const wooEntryPoints = [
 		trigger: [
 			{
 				id: 'submit',
-				ignoreSubmitter: ['button[name]:not([name="add-to-cart"])'],
-			},
-		],
+				ignoreSubmitter: ['button[name]:not([name="add-to-cart"])']
+			}
+		]
 	},
 
 	{
 		els: '.ct-header-cart > .ct-cart-item, .ajax_add_to_cart, .ct-ajax-add-to-cart',
 		load: () => import('./mini-cart'),
 		events: ['ct:header:update'],
-		trigger: ['hover-with-touch'],
+		trigger: ['hover-with-touch']
 	},
 
 	{
 		els: '#woo-cart-panel .qty',
 		trigger: ['change'],
-		load: () => import('./quantity-update'),
+		load: () => import('./quantity-update')
 	},
 
 	{
@@ -91,6 +97,6 @@ export const wooEntryPoints = [
 		load: () => import('./variation-stock'),
 		condition: () =>
 			!!document.querySelector('.product .ct-woo-card-stock'),
-		trigger: ['hover'],
-	},
+		trigger: ['hover']
+	}
 ]

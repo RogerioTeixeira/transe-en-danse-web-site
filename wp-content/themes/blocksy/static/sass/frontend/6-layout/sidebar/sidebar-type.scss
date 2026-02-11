@@ -2,7 +2,7 @@
 
 .ct-sidebar {
 	position: relative;
-	z-index: 1;
+	// z-index: 1;
 
 	// widgets spacing
 	.ct-widget {
@@ -14,8 +14,8 @@
 	}
 
 	// sticky sidebar
-	&[data-sticky='sidebar'],
-	.ct-sticky-widgets {
+	:is(&[data-sticky='sidebar'], .ct-sticky-widgets) {
+
 		@include functions.media-breakpoint-up(lg) {
 			// prettier-ignore
 			position: sticky;
@@ -24,6 +24,7 @@
 	}
 
 	&[data-sticky='widgets'] {
+
 		@include functions.media-breakpoint-up(lg) {
 			height: 100%;
 		}
@@ -31,10 +32,10 @@
 }
 
 aside {
-	// position: relative;
 
 	// type 2
 	&[data-type='type-2'] .ct-sidebar {
+
 		&:not([data-widgets='separated']) {
 			padding: var(--sidebar-inner-spacing, 35px);
 			background: var(--sidebar-background-color, var(--theme-palette-color-8));
@@ -44,6 +45,7 @@ aside {
 		}
 
 		&[data-widgets='separated'] {
+
 			.ct-widget {
 				padding: var(--sidebar-inner-spacing, 35px);
 				background: var(--sidebar-background-color, var(--theme-palette-color-8));
@@ -56,8 +58,13 @@ aside {
 
 	// type 4
 	&[data-type='type-4'] {
-		@include functions.media-breakpoint-down(md) {
-			.ct-sidebar {
+		
+		.ct-sidebar {
+			@include functions.media-breakpoint-up(lg) {
+				z-index: 1;
+			}
+
+			@include functions.media-breakpoint-down(md) {
 				padding: var(--sidebar-inner-spacing, 35px);
 				background: var(--sidebar-background-color, var(--theme-palette-color-8));
 			}
@@ -67,8 +74,7 @@ aside {
 
 // type 3 & 4 helper
 @include functions.media-breakpoint-up(lg) {
-	aside[data-type='type-3'],
-	aside[data-type='type-4'] {
+	aside:is([data-type='type-3'], [data-type='type-4']) {
 		position: relative;
 
 		&:after {
@@ -89,8 +95,8 @@ aside {
 	}
 
 	[data-sidebar='right'] {
-		> [data-type='type-3'],
-		> [data-type='type-4'] {
+
+		> :is([data-type='type-3'], [data-type='type-4']) {
 			padding-inline-start: var(--sidebar-inner-spacing, 35px);
 
 			&:after {
@@ -100,8 +106,8 @@ aside {
 	}
 
 	[data-sidebar='left'] {
-		> [data-type='type-3'],
-		> [data-type='type-4'] {
+
+		> :is([data-type='type-3'], [data-type='type-4']) {
 			padding-inline-end: var(--sidebar-inner-spacing, 35px);
 
 			&:after {
