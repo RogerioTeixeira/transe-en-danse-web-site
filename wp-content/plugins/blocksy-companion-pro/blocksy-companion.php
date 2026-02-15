@@ -3,7 +3,7 @@
 /*
 Plugin Name: Blocksy Companion (Premium)
 Description: This plugin is the companion for the Blocksy theme, it runs and adds its enhacements only if the Blocksy theme is installed and active.
-Version: 2.1.27
+Version: 2.1.28
 Update URI: https://api.freemius.com
 Author: CreativeThemes
 Author URI: https://creativethemes.com

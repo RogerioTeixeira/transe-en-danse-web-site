@@ -166,7 +166,7 @@ class BlocksyExtensionMegaMenu {
 		);
 
 		add_action('wp_ajax_blocksy_ext_mega_menu_get_nav_item_settings', function () {
-			if (! current_user_can('manage_options')) {
+			if (! current_user_can('edit_theme_options')) {
 				wp_send_json_error();
 			}
 
@@ -191,7 +191,7 @@ class BlocksyExtensionMegaMenu {
 		});
 
 		add_action('wp_ajax_blocksy_ext_mega_menu_update_nav_item_setting', function () {
-			if (! current_user_can('manage_options')) {
+			if (! current_user_can('edit_theme_options')) {
 				wp_send_json_error();
 			}
 

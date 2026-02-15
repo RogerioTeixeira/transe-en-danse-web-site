@@ -1,3 +1,11 @@
+2.1.28: 2026-02-12
+- Improvement: Advanced Menus - Inherit Menus screen permission from Core WP when validating the mega menu update endpoint
+- Improvement: Make sure all translation files have the correct slug
+- Improvement: Product Reviews - add "address" field option for "Local Business" entity type
+- Improvement: Shop extra/product filters - Correctly encode URLs with special characters in filter links
+- Improvement: Shop extra/swatches - Correctly compute out of stock status for swatches that are disabled
+- Improvement: Starter sites importer - more reliable way of installing Elementor starter sites
+
 2.1.27: 2026-01-30
 - Improvement: Demo importer - correctly export and import ACF custom taxonomies
 - Improvement: Dynamic data image - make sure cover type styles are loaded on demand

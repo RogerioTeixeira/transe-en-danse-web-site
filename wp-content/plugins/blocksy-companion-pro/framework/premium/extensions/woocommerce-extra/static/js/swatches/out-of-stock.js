@@ -44,7 +44,7 @@ const getRelevantVariations = async (form, args = {}) => {
 
 		if (maybeClosestPost) {
 			const matchingClass = [...maybeClosestPost.classList].find((c) =>
-				c.match(/^post-/)
+				c.match(/^post-/),
 			)
 
 			if (matchingClass) {
@@ -76,7 +76,7 @@ const getRelevantVariations = async (form, args = {}) => {
 				'?action=blocksy_swatches_get_product_out_of_stock_variations',
 			{
 				product_id: productId,
-			}
+			},
 		)
 
 		const result = await response.json()
@@ -173,7 +173,7 @@ const markAsInStock = (swatch) => {
 	) {
 		maybeTooltip.textContent = maybeTooltip.textContent.replace(
 			` - ${outOfStockLabel}`,
-			''
+			'',
 		)
 	}
 }
@@ -208,7 +208,7 @@ const applyOutOfStockForSwatch = async (swatch, args = {}) => {
 	// Usually, this is the case when the product has a lot of variations.
 	if (variationsDescriptor.fast_variations_data) {
 		const allVariations = Object.values(
-			variationsDescriptor.fast_variations_data
+			variationsDescriptor.fast_variations_data,
 		)
 
 		const allMatching = allVariations.filter((variation) => {
@@ -220,7 +220,7 @@ const applyOutOfStockForSwatch = async (swatch, args = {}) => {
 		})
 
 		const alwaysOutOfStock = allMatching.every(
-			(variation) => !variation.is_in_stock
+			(variation) => !variation.is_in_stock,
 		)
 
 		const maybeFoundVariation = allVariations.find((variation) => {
@@ -280,8 +280,13 @@ const applyOutOfStockForSwatch = async (swatch, args = {}) => {
 			)
 		})
 
+		if (!allMatching.length) {
+			markAsHidden(swatch)
+			return
+		}
+
 		const alwaysOutOfStock = allMatching.every(
-			(variation) => !variation.is_in_stock
+			(variation) => !variation.is_in_stock,
 		)
 
 		const maybeFoundVariation = allVariations.find((variation) => {
@@ -348,7 +353,7 @@ export const handleOutofStock = (el) => {
 	}
 
 	const selectsWithAttributes = Array.from(
-		form.querySelectorAll('select')
+		form.querySelectorAll('select'),
 	).filter((s) => s.closest('.ct-variation-swatches'))
 
 	const selectedAttributes = selectsWithAttributes
@@ -369,7 +374,7 @@ export const handleOutofStock = (el) => {
 				form,
 				selectedAttributes,
 				attribute_name: cleanupId(select.dataset.attribute_name),
-			})
+			}),
 		)
 	})
 }
