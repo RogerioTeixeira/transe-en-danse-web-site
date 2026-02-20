@@ -174,10 +174,9 @@ blocksy_output_background_css([
 	)
 ]);
 
-blocksy_output_background_css([
-	'selector' => blocksy_prefix_selector('', 'block:' . $id),
-	'css' => $css,
-	'value' => blocksy_default_akg('popup_backdrop_background', $atts,
+$popup_background_background = blocksy_default_akg(
+	'popup_backdrop_background', 
+	$atts,
 	blocksy_background_default_value([
 		'backgroundColor' => [
 			'default' => [
@@ -185,5 +184,31 @@ blocksy_output_background_css([
 			],
 		],
 	])
-	)
+);
+
+if(
+	isset($popup_background_background['backgroundColor']['default']['color'])
+	&&
+	$popup_background_background['backgroundColor']['default']['color'] !== 'CT_CSS_SKIP_RULE'
+) {
+	$background_blur = blocksy_default_akg('popup_backdrop_background_blur', $atts, 0);
+
+	if($background_blur !== 0) {
+		blocksy_output_responsive([
+			'css' => $css,
+			'tablet_css' => $tablet_css,
+			'mobile_css' => $mobile_css,
+			'selector' => blocksy_prefix_selector('', 'block:' . $id),
+			'variableName' => 'popup-backdrop-blur',
+			'value' => $background_blur,
+			'unit' => 'px',
+			'should_skip_output' => false
+		]);
+	}
+}
+
+blocksy_output_background_css([
+	'selector' => blocksy_prefix_selector('', 'block:' . $id),
+	'css' => $css,
+	'value' => $popup_background_background
 ]);

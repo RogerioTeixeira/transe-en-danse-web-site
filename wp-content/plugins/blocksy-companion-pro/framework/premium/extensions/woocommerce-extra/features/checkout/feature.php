@@ -118,6 +118,8 @@ class Checkout {
 			$cart_item_key
 		);
 
+		do_action('blocksy:ext:woocommerce-extra:checkout:quantity-input:before', $product);
+
 		$product_id = apply_filters(
 			'woocommerce_cart_item_product_id',
 			$cart_item['product_id'],
@@ -158,6 +160,8 @@ class Checkout {
 				''
 			);
 		}
+
+		do_action('blocksy:ext:woocommerce-extra:checkout:quantity-input:after', $product);
 
 		return $product_quantity;
 	}

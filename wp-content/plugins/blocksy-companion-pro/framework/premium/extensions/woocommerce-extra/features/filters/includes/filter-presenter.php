@@ -155,4 +155,35 @@ class FilterPresenter {
 			)
 		);
 	}
+
+	public static function filter_has_active_child($param, $children) {
+		$params = FiltersUtils::get_query_params();
+
+		if (empty($params['params'][$param])) {
+			return false;
+		}
+
+		$active_terms = array_map(
+			'urldecode',
+			explode(',', $params['params'][$param])
+		);
+
+		return self::children_contains_active($children, $active_terms);
+	}
+
+	private static function children_contains_active($children, $active_terms) {
+		foreach ($children as $child) {
+			if (in_array($child->term_id, $active_terms)) {
+				return true;
+			}
+
+			if (!empty($child->children)) {
+				if (self::children_contains_active($child->children, $active_terms)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
 }

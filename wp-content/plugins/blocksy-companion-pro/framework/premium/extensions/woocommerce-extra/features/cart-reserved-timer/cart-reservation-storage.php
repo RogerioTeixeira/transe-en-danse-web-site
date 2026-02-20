@@ -4,6 +4,7 @@ namespace Blocksy\Extensions\WoocommerceExtra;
 
 class CartReservationStorage {
 	private $table;
+	private static $cache = [];
 
 	public function __construct() {
 		global $wpdb;
@@ -56,7 +57,7 @@ class CartReservationStorage {
 
 		$encoded_cart = maybe_serialize($cart_data);
 		$table = esc_sql($this->table);
-		
+
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$existing = $wpdb->get_var(
 			$wpdb->prepare(
@@ -88,15 +89,19 @@ class CartReservationStorage {
 				]
 			);
 		}
+
+		self::$cache = [];
 	}
 
 	public function remove_cart_reservation($session_id) {
 		global $wpdb;
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$wpdb->delete($this->table, [ 'session_id' => $session_id ]);
+
+		self::$cache = [];
 	}
 
-	public function get_all_active_reservations() {
+	public function get_all_active_reservations($args = []) {
 		global $wpdb;
 
 		if (! $this->table_exists()) {
@@ -106,20 +111,38 @@ class CartReservationStorage {
 		$woo_reserved_timer_time = blc_theme_functions()->blocksy_get_theme_mod('woo_reserved_timer_time', 10);
 		$total_seconds = $woo_reserved_timer_time * 60;
 
-		$current_timestamp = current_time('timestamp', true);
-		$current_time = gmdate('Y-m-d H:i:s', $current_timestamp);
+		$current_time = gmdate('Y-m-d H:i:s', current_time('timestamp', true));
+		$exclude_session_id = $args['exclude_session_id'] ?? null;
+
+		$cache_key = md5(json_encode([
+			'current_time' => $current_time,
+			'exclude_session_id' => $exclude_session_id,
+		]));
+
+		if (isset(self::$cache[$cache_key])) {
+			return self::$cache[$cache_key];
+		}
+
 		$table = esc_sql($this->table);
 
+		$where = ['TIMESTAMPDIFF(SECOND, last_modified, %s) < %d'];
+		$params = [$table, $current_time, $total_seconds];
+
+		if ($exclude_session_id) {
+			$where[] = 'session_id != %s';
+			$params[] = $exclude_session_id;
+		}
+
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-		return $wpdb->get_results(
+		$results = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT * FROM %i
-				WHERE TIMESTAMPDIFF(SECOND, last_modified, %s) < %d",
-				$table,
-				$current_time,
-				$total_seconds
+				"SELECT * FROM %i WHERE " . implode(' AND ', $where),
+				...$params
 			)
 		);
+
+		self::$cache[$cache_key] = $results;
+		return $results;
 	}
 
 	public function clear_expired() {
@@ -146,7 +169,7 @@ class CartReservationStorage {
 
 	public function get_current_reservation($session_id) {
 		global $wpdb;
-		
+
 		if (! $this->table_exists()) {
 			return null;
 		}
@@ -169,3 +192,4 @@ class CartReservationStorage {
 		return $result;
 	}
 }
+

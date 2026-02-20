@@ -1,3 +1,11 @@
+2.1.29: 2026-02-18
+- Improvement: Cart reserved timer - correctly calculate the stock number indifferently of user session
+- Improvement: Cart reserved timer - make sure the out of stock status is correctly reported for fully reserved products
+- Improvement: Newsletter extension - correctly apply the "double opt-in" feature for Mailchimp integration
+- Improvement: Popup content block - add blur option for backdrop area
+- Improvement: Shop filters - make sure filters are not collapsing themselves when filtering
+- Improvement: Waitlist extension - ensure cookie values are properly sanitized as numbers
+
 2.1.28: 2026-02-12
 - Improvement: Advanced Menus - Inherit Menus screen permission from Core WP when validating the mega menu update endpoint
 - Improvement: Make sure all translation files have the correct slug

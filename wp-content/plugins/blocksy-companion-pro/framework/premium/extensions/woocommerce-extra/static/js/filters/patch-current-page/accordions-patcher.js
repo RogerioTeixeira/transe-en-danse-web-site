@@ -38,7 +38,7 @@ class AccordionsPatcher {
 	getAllExpandables() {
 		return [
 			...document.querySelectorAll(
-				'.ct-filter-item-inner .ct-expandable-trigger, .ct-block-wrapper > .ct-expandable-trigger'
+				'.ct-filter-item-inner .ct-expandable-trigger, .ct-block-wrapper > .ct-expandable-trigger',
 			),
 		]
 	}
@@ -46,27 +46,27 @@ class AccordionsPatcher {
 	generateElIdentifier(el) {
 		return {
 			selector: generateQuerySelector(el),
-			text: (el.innerText || el.parentNode.innerText).replace(
+			text: (el.textContent || el.parentNode.textContent).replace(
 				/[\d\(\)]/gu,
-				''
+				'',
 			),
 		}
 	}
 
 	elementMatchesIdentifier(el, identifier) {
-		let innerTextForMatching = (
-			el.innerText || el.parentNode.innerText
+		let textContentForMatching = (
+			el.textContent || el.parentNode.textContent
 		).replace(/[\d\(\)]/gu, '')
 
 		return (
-			identifier.text === innerTextForMatching &&
+			identifier.text === textContentForMatching &&
 			el.matches(identifier.selector)
 		)
 	}
 
 	beforeReplace() {
 		const allTriggersStates = this.getAllExpandables().map((el) =>
-			this.generateElIdentifier(el)
+			this.generateElIdentifier(el),
 		)
 
 		const previousExpandedTriggersStates = this.getAllExpandables()
@@ -82,7 +82,7 @@ class AccordionsPatcher {
 	afterReplace({ previousExpandedTriggersStates, allTriggersStates }) {
 		this.getAllExpandables().map((el) => {
 			const wasOnThePageBefore = allTriggersStates.some((identifier) =>
-				this.elementMatchesIdentifier(el, identifier)
+				this.elementMatchesIdentifier(el, identifier),
 			)
 
 			// Leave as is if it was not on the page before
@@ -92,7 +92,7 @@ class AccordionsPatcher {
 
 			const isExpandedNow = el.ariaExpanded === 'true'
 			const wasExpandedBefore = previousExpandedTriggersStates.some(
-				(identifier) => this.elementMatchesIdentifier(el, identifier)
+				(identifier) => this.elementMatchesIdentifier(el, identifier),
 			)
 
 			if (isExpandedNow && wasExpandedBefore) {

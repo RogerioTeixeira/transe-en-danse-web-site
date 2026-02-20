@@ -418,7 +418,8 @@ class TaxonomiesFilter extends BaseFilter {
 		$list_items_html = [];
 
 		foreach ($terms as $key => $value) {
-			$list_items_html[] = self::get_taxonomy_item($value);
+			$term_data = self::get_taxonomy_item($value);
+			$list_items_html[] = $term_data['markup'];
 		}
 
 		return $list_items_html;
@@ -462,6 +463,20 @@ class TaxonomiesFilter extends BaseFilter {
 		if ($this->attributes['viewType'] === 'list') {
 			$is_hierarchical = $this->attributes['hierarchical'];
 		}
+
+		$return_payload = [
+			'markup' => '',
+			'is_active' => FilterPresenter::is_filter_active(
+				$this->get_filter_name(),
+				$term->term_id
+			),
+			'has_active_children' => false
+		];
+
+		$is_active = FilterPresenter::is_filter_active(
+			$this->get_filter_name(),
+			$term->term_id
+		);
 
 		$is_expandable = $is_hierarchical ? $this->attributes['expandable'] : false;
 
@@ -560,12 +575,7 @@ class TaxonomiesFilter extends BaseFilter {
 				'aria-label' => $term->name,
 			];
 
-			if (
-				FilterPresenter::is_filter_active(
-					$this->get_filter_name(),
-					$term->term_id
-				)
-			) {
+			if ($return_payload['is_active']) {
 				$checkox_attr['checked'] = 'checked';
 			}
 
@@ -578,7 +588,7 @@ class TaxonomiesFilter extends BaseFilter {
 		]);
 
 		if (! $products_count) {
-			return '';
+			return $return_payload;
 		}
 
 		$label_html = $this->get_item_label(
@@ -600,17 +610,33 @@ class TaxonomiesFilter extends BaseFilter {
 			$term_children = $term->children;
 
 			foreach ($term_children as $key => $value) {
-				$childrens_items_html[] = self::get_taxonomy_item(
+				$child_data = self::get_taxonomy_item(
 					$value,
 					$this->attributes
 				);
+
+				$childrens_items_html[] = $child_data['markup'];
+
+				if (
+					$child_data['is_active']
+					||
+					$child_data['has_active_children']
+				) {
+					$return_payload['has_active_children'] = true;
+				}
 			}
+
+			$defaultExpanded = (
+				$this->attributes['defaultExpanded']
+				||
+				$return_payload['has_active_children']
+			);
 
 			$childrens_html = blocksy_html_tag(
 				'ul',
 				[
 					'class' => 'ct-filter-children',
-					'aria-hidden' => $this->attributes['defaultExpanded'] ? 'false' : 'true',
+					'aria-hidden' => $defaultExpanded ? 'false' : 'true',
 					'data-behaviour' => $is_expandable ? 'drop-down' : 'list',
 				],
 				implode('', $childrens_items_html)
@@ -621,10 +647,10 @@ class TaxonomiesFilter extends BaseFilter {
 					'button',
 					[
 						'class' => 'ct-expandable-trigger',
-						'aria-expanded' => $this->attributes['defaultExpanded']
+						'aria-expanded' => $defaultExpanded
 							? 'true'
 							: 'false',
-						'aria-label' => $this->attributes['defaultExpanded']
+						'aria-label' => $defaultExpanded
 							? __('Collapse', 'blocksy-companion')
 							: __('Expand', 'blocksy-companion'),
 						'data-icon' => 'arrow'
@@ -635,7 +661,7 @@ class TaxonomiesFilter extends BaseFilter {
 		}
 
 		if ($this->attributes['showCounters'] && empty($products_count)) {
-			return '';
+			return $return_payload;
 		}
 
 		if ($is_expandable && $this->attributes['showCounters']) {
@@ -644,7 +670,7 @@ class TaxonomiesFilter extends BaseFilter {
 
 		$item_classes = ['ct-filter-item'];
 
-		return blocksy_html_tag(
+		$return_payload['markup'] = blocksy_html_tag(
 			'li',
 			[
 				'class' => implode(' ', $item_classes),
@@ -664,12 +690,7 @@ class TaxonomiesFilter extends BaseFilter {
 							'data-key' => $this->attributes['taxonomy'],
 							'data-value' => $term->term_id,
 						],
-						(
-							FilterPresenter::is_filter_active(
-								$this->get_filter_name(),
-								$term->term_id
-							) ? ['class' => 'active'] : []
-						)
+						($return_payload['is_active'] ? ['class' => 'active'] : [])
 					),
 					$checbox_html .
 					$tax_image .
@@ -678,6 +699,8 @@ class TaxonomiesFilter extends BaseFilter {
 				) . $expandable_triger
 			) . $childrens_html
 		);
+
+		return $return_payload;
 	}
 
 	private function get_terms_for($terms_counts, $args = []) {

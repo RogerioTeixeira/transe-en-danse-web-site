@@ -194,6 +194,8 @@ class OffcanvasCart {
 			$cart_item_key
 		);
 
+		do_action('blocksy:ext:woocommerce-extra:offcanvas-cart:quantity-input:before', $_product);
+
 		$product_price = apply_filters(
 			'woocommerce_cart_item_price',
 			WC()->cart->get_product_price($cart_item['data']),
@@ -230,6 +232,8 @@ class OffcanvasCart {
 
 			remove_filter('woocommerce_quantity_input_args', $callback, 50, 1);
 		}
+
+		do_action('blocksy:ext:woocommerce-extra:offcanvas-cart:quantity-input:after', $_product);
 
 		return '<div class="ct-product-actions">' . $product_quantity . '<span class="ct-product-multiply-symbol">×</span>' . $product_price . '</div>';
 	}

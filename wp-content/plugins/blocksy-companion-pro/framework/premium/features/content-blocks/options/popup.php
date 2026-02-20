@@ -759,6 +759,23 @@ $options = [
 				])
 			],
 
+			blocksy_rand_md5() => [
+				'type' => 'ct-condition',
+				'condition' => [
+					'popup_backdrop_background/backgroundColor/default/color' => "!" . Blocksy_Css_Injector::get_skip_rule_keyword()
+				],
+				'options' => [
+					'popup_backdrop_background_blur' => [
+						'label' => __( 'Backdrop Blur', 'blocksy' ),
+						'type' => 'ct-number',
+						'design' => 'inline',
+						'value' => 0,
+						'min' => 0,
+						'max' => 100,
+					],
+				]
+			],
+
 		],
 	],
 ];

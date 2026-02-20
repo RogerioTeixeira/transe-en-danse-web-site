@@ -3,6 +3,8 @@
 namespace Blocksy\Extensions\WoocommerceExtra;
 
 class CartReservedTimer {
+	private $skip_stock_filter = false;
+
 	public function get_dynamic_styles_data($args) {
 		return [
 			'path' => dirname(__FILE__) . '/dynamic-styles.php'
@@ -143,6 +145,70 @@ class CartReservedTimer {
 			}
 		}, 25);
 
+		// Set validation flag BEFORE WooCommerce processes add-to-cart (priority 20)
+		// https://github.com/woocommerce/woocommerce/blob/trunk/plugins/woocommerce/includes/class-wc-form-handler.php
+		add_action('wp_loaded', function() {
+			// Regular add-to-cart form submission
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			if (isset($_REQUEST['add-to-cart'])) {
+				$this->skip_stock_filter = true;
+			}
+
+			// Cart update form submission
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			if (isset($_REQUEST['update_cart'])) {
+				$this->skip_stock_filter = true;
+			}
+		}, 19);
+
+		// Set validation flag BEFORE WooCommerce AJAX (priority 0)
+		// https://github.com/woocommerce/woocommerce/blob/trunk/plugins/woocommerce/includes/class-wc-ajax.php
+		add_action('template_redirect', function() {
+			if (!wp_doing_ajax()) {
+				return;
+			}
+
+			$validation_actions = [
+				'woocommerce_add_to_cart',
+				'woocommerce_checkout',
+				'blocksy_update_qty_cart',
+			];
+
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$action = isset($_REQUEST['action']) ? sanitize_text_field(wp_unslash($_REQUEST['action'])) : '';
+
+			if (in_array($action, $validation_actions, true)) {
+				$this->skip_stock_filter = true;
+			}
+		}, -1);
+
+		// Set flag during offcanvas cart quantity field generation
+		add_action('blocksy:ext:woocommerce-extra:offcanvas-cart:quantity-input:before', function() {
+			$this->skip_stock_filter = true;
+		});
+
+		add_action('blocksy:ext:woocommerce-extra:offcanvas-cart:quantity-input:after', function() {
+			$this->skip_stock_filter = false;
+		});
+
+		// Set flag during cart page quantity field generation
+		add_action('woocommerce_before_cart_contents', function() {
+			$this->skip_stock_filter = true;
+		});
+
+		add_action('woocommerce_after_cart_contents', function() {
+			$this->skip_stock_filter = false;
+		});
+
+		// Set flag during checkout page quantity field generation
+		add_action('blocksy:ext:woocommerce-extra:checkout:quantity-input:before', function() {
+			$this->skip_stock_filter = true;
+		});
+
+		add_action('blocksy:ext:woocommerce-extra:checkout:quantity-input:after', function() {
+			$this->skip_stock_filter = false;
+		});
+
 		add_action('init', function() {
 			if (
 				blc_theme_functions()->blocksy_get_theme_mod('woo_reserved_timer_in_cart', 'yes') === 'yes'
@@ -190,39 +256,26 @@ class CartReservedTimer {
 				});
 
 				add_filter('woocommerce_cart_item_required_stock_is_not_enough', function($is_not_enough, $product, $values) {
-					global $wpdb;
 					$storage = new CartReservationStorage();
 
-					$active = $storage->get_all_active_reservations();
+					$active = $storage->get_all_active_reservations(
+						WC()->session
+							? ['exclude_session_id' => WC()->session->get_customer_id()]
+							: []
+					);
 					$reserved = 0;
 
-					$current_time = current_time('timestamp', true);
-					$woo_reserved_timer_time = blc_theme_functions()->blocksy_get_theme_mod('woo_reserved_timer_time', 10);
-					$total_seconds = $woo_reserved_timer_time * 60;
-
 					foreach ($active as $res) {
-						if (
-							WC()->session
-							&&
-							$res->session_id === WC()->session->get_customer_id()
-						) {
-							continue;
-						}
+						$cart = maybe_unserialize($res->cart_data);
 
-						$expires_at = strtotime($res->last_modified) + $total_seconds;
-
-						if ($current_time < $expires_at) {
-							$cart = maybe_unserialize($res->cart_data);
-
-							if (isset($cart[$product->get_id()])) {
-								$reserved += (int) $cart[$product->get_id()];
-							}
+						if (isset($cart[$product->get_id()])) {
+							$reserved += (int) $cart[$product->get_id()];
 						}
 					}
 
 					$required_stock = isset($values['quantity']) ? (int) $values['quantity'] : 0;
 
-					$available = max(0, $product->get_stock_quantity() - $reserved);
+					$available = max(0, $this->get_raw_stock($product) - $reserved);
 
 					if ($available < $required_stock) {
 						if (! $is_not_enough) {
@@ -235,93 +288,11 @@ class CartReservedTimer {
 					return $is_not_enough;
 				}, 10, 3);
 
-				add_filter('woocommerce_get_stock_html', function($html, $product) {
-					if (
-						is_cart()
-						||
-						is_checkout()
-						||
-						$product->get_type() !== 'variation'
-					) {
-						return $html;
-					}
+				add_filter('woocommerce_product_get_stock_quantity', [$this, 'filter_stock_quantity'], 10, 2);
+				add_filter('woocommerce_product_variation_get_stock_quantity', [$this, 'filter_stock_quantity'], 10, 2);
 
-					$storage = new CartReservationStorage();
-					$active = $storage->get_all_active_reservations();
-
-					$reserved = 0;
-					foreach ($active as $res) {
-						if (
-							WC()->session
-							&&
-							$res->session_id === WC()->session->get_customer_id()
-						) {
-							continue;
-						}
-
-						$cart = maybe_unserialize($res->cart_data);
-
-						if (isset($cart[$product->get_id()])) {
-							$reserved += (int) $cart[$product->get_id()];
-						}
-					}
-
-					$available = max(0, $product->get_stock_quantity() - $reserved);
-
-					$product->set_stock_quantity($available);
-
-					$html = '';
-					$availability = $product->get_availability();
-
-					if (! empty($availability['availability'])) {
-						ob_start();
-
-						wc_get_template(
-							'single-product/stock.php',
-							array(
-								'product' => $product,
-								'class' => $availability['class'],
-								'availability' => $availability['availability'],
-							)
-						);
-
-						$html = ob_get_clean();
-					}
-
-					return $html;
-				}, 10, 2);
-
-				add_filter('woocommerce_product_get_stock_quantity', function($stock_quantity, $product) {
-					if (
-						is_cart()
-						||
-						is_checkout()
-					) {
-						return $stock_quantity;
-					}
-
-					$storage = new CartReservationStorage();
-					$active = $storage->get_all_active_reservations();
-
-					$reserved = 0;
-					foreach ($active as $res) {
-						if (
-							WC()->session
-							&&
-							$res->session_id === WC()->session->get_customer_id()
-						) {
-							continue;
-						}
-
-						$cart = maybe_unserialize($res->cart_data);
-
-						if (isset($cart[$product->get_id()])) {
-							$reserved += (int) $cart[$product->get_id()];
-						}
-					}
-
-					return max(0, $stock_quantity - $reserved);
-				}, 10, 2);
+				add_filter('woocommerce_product_get_stock_status', [$this, 'filter_stock_status'], 10, 2);
+				add_filter('woocommerce_product_variation_get_stock_status', [$this, 'filter_stock_status'], 10, 2);
 			}
 		});
 
@@ -329,22 +300,41 @@ class CartReservedTimer {
 		add_action('wp_ajax_nopriv_blc_ext_cart_reserved_timer_sync', [$this, 'sync_timers']);
 	}
 
-	public function woocommerce_format_stock_quantity($stock_quantity, $product) {
-		remove_filter('woocommerce_format_stock_quantity', [$this, 'woocommerce_format_stock_quantity'], 10, 2);
+	/**
+	 * Get raw stock quantity bypassing our woocommerce_product_get_stock_quantity
+	 * filter. Must be used in callbacks that subtract reservations themselves
+	 * (required_stock_is_not_enough, format_stock_quantity, is_in_stock,
+	 * get_stock_html) to avoid double-subtracting reservations.
+	 */
+	private function get_raw_stock($product) {
+		return (int) $product->get_stock_quantity('edit');
+	}
+
+	public function filter_stock_quantity($stock_quantity, $product) {
+		// Cart and checkout pages have two contexts:
+		// 1. Validation (skip_stock_filter=false): skip entirely so user's
+		//    reserved items pass stock validation
+		// 2. Quantity inputs (skip_stock_filter=true): exclude only current
+		//    user's reservation so max input reflects what they can order
+		//    (stock minus other users' reservations)
+		if ((is_cart() || is_checkout()) && !$this->skip_stock_filter) {
+			return $stock_quantity;
+		}
 
 		$storage = new CartReservationStorage();
-		$active = $storage->get_all_active_reservations();
+
+		// During quantity input generation: exclude current user's reservation
+		// During product display: include ALL reservations (show true available stock)
+		$exclude_current_user = $this->skip_stock_filter;
+
+		$active = $storage->get_all_active_reservations(
+			$exclude_current_user && WC()->session
+				? ['exclude_session_id' => WC()->session->get_customer_id()]
+				: []
+		);
 
 		$reserved = 0;
 		foreach ($active as $res) {
-			if (
-				WC()->session
-				&&
-				$res->session_id === WC()->session->get_customer_id()
-			) {
-				continue;
-			}
-
 			$cart = maybe_unserialize($res->cart_data);
 
 			if (isset($cart[$product->get_id()])) {
@@ -352,7 +342,75 @@ class CartReservedTimer {
 			}
 		}
 
-		$available = max(0, $product->get_stock_quantity() - $reserved);
+		return max(0, $stock_quantity - $reserved);
+	}
+
+	public function filter_stock_status($status, $product) {
+		$out_of_stock = \Automattic\WooCommerce\Enums\ProductStockStatus::OUT_OF_STOCK;
+
+		if ($status === $out_of_stock || !$product->managing_stock()) {
+			return $status;
+		}
+
+		// Cart and checkout: skip so user's reserved items remain "in stock"
+		if ((is_cart() || is_checkout()) && !$this->skip_stock_filter) {
+			return $status;
+		}
+
+		$storage = new CartReservationStorage();
+
+		// During quantity input generation: exclude current user's reservation
+		// During product display: include ALL reservations
+		$exclude_current_user = $this->skip_stock_filter;
+
+		$active = $storage->get_all_active_reservations(
+			$exclude_current_user && WC()->session
+				? ['exclude_session_id' => WC()->session->get_customer_id()]
+				: []
+		);
+
+		$reserved = 0;
+		foreach ($active as $res) {
+			$cart = maybe_unserialize($res->cart_data);
+
+			if (isset($cart[$product->get_id()])) {
+				$reserved += (int) $cart[$product->get_id()];
+			}
+		}
+
+		$available = $this->get_raw_stock($product) - $reserved;
+
+		if ($available <= 0) {
+			if ($product->backorders_allowed()) {
+				return \Automattic\WooCommerce\Enums\ProductStockStatus::ON_BACKORDER;
+			}
+
+			return $out_of_stock;
+		}
+
+		return $status;
+	}
+
+	public function woocommerce_format_stock_quantity($stock_quantity, $product) {
+		remove_filter('woocommerce_format_stock_quantity', [$this, 'woocommerce_format_stock_quantity'], 10, 2);
+
+		$storage = new CartReservationStorage();
+		$active = $storage->get_all_active_reservations(
+			WC()->session
+				? ['exclude_session_id' => WC()->session->get_customer_id()]
+				: []
+		);
+
+		$reserved = 0;
+		foreach ($active as $res) {
+			$cart = maybe_unserialize($res->cart_data);
+
+			if (isset($cart[$product->get_id()])) {
+				$reserved += (int) $cart[$product->get_id()];
+			}
+		}
+
+		$available = max(0, $this->get_raw_stock($product) - $reserved);
 
 		return $available;
 	}

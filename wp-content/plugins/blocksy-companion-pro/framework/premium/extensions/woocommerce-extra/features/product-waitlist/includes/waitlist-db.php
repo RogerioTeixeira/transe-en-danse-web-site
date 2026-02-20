@@ -91,13 +91,19 @@ class ProductWaitlistDb {
 			true
 		);
 
-		if (!$waitlist) {
+		if (!is_array($waitlist)) {
 			return [];
 		}
 
-		$waitlist = self::get_waitlists_from_db($product, '', '', false, $waitlist);
+		// Sanitize: ensure all values are integers to prevent SQL injection.
+		$waitlist = array_map('intval', $waitlist);
+		$waitlist = array_filter($waitlist);
 
-		return $waitlist;
+		if (empty($waitlist)) {
+			return [];
+		}
+
+		return self::get_waitlists_from_db($product, '', '', false, $waitlist);
 	}
 
     public static function get_waitlists_from_db($product = '', $email = '', $user_id = '', $confirmed = true, $lists = [], $page = false) {
